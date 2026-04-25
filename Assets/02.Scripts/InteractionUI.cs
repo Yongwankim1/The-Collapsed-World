@@ -34,8 +34,7 @@ public class InteractionUI : MonoBehaviour
         }
         repairBtn.interactable = !isRepair;
         descriptionText.text = isRepair ? "이 시설은 수리되어 있습니다" : "시설을 수리 하시겠습니까?";
-        gameObject.SetActive(true);
-
+        EscManager.Instance.PushPanel(gameObject);
     }
 
     public void OnRepair()
@@ -48,7 +47,8 @@ public class InteractionUI : MonoBehaviour
             playerInventory.RemoveItem(facilityBase.RequirementMaterials.ItemID[i], facilityBase.RequirementMaterials.Amount[i]);
         }
         facilityBase.Repair();
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
+        EscManager.Instance.PopPanel();
     }
     private void OnEnable()
     {

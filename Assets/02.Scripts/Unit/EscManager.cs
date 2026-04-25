@@ -43,6 +43,7 @@ public class EscManager : MonoBehaviour
     public void PushPanel(GameObject panel)
     {
         if (panel == null) return;
+        if (openPanels.Contains(panel)) return;
         panel.SetActive(true);
         openPanels.Push(panel);
         count = openPanels.Count;

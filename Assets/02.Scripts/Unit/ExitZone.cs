@@ -1,25 +1,24 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class ExitZone : MonoBehaviour, IInteractable
 {
-    [SerializeField] float exitTimer;
-    Coroutine exitZoneActive;
+    [SerializeField] float exitTimer = 3f;
+    [SerializeField] ExitTimerUI exitTimerUI;
+    void Start()
+    {
+        if(exitTimerUI == null) exitTimerUI = FindFirstObjectByType<ExitTimerUI>(FindObjectsInactive.Include);    
+    }
     public void Interact(PlayerInteract player)
     {
-        if(exitZoneActive == null) exitZoneActive = StartCoroutine(Exit());
+        exitTimerUI.OnStartExitTimer(exitTimer);
     }
-    IEnumerator Exit()
-    {
-        yield return new WaitForSeconds(exitTimer);
-        SceneManager.LoadScene("ResultScene");
-    }
+
     void OnTriggerExit2D(Collider2D other)
     {
-        if (exitZoneActive != null)
-        {
-            StopCoroutine(exitZoneActive);
-        }
+        if (!other.CompareTag("Player")) return;
+        if (exitTimerUI == null) return;
+
+        exitTimerUI.OnStopExitTimer();
     }
 }

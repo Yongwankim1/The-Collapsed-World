@@ -110,8 +110,11 @@ MonoBehaviour:
   facilityName: "\uC218\uB3C4\uC2DC\uC124"
   requirementMaterials:
     ItemID:
-    - HPHeal01
-    Amount: 01000000
+    - Material01
+    - Material02
+    - Material03
+    - Material04
+    Amount: 02000000020000000200000002000000
   interactionUI: {fileID: 0}
   isRepair: 0
   activeObject: {fileID: 3342409476857002875}
@@ -145,7 +148,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0

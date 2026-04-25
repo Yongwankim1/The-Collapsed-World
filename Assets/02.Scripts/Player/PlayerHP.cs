@@ -93,22 +93,13 @@ public class PlayerHP : CharacterHP
 
     private void RefreshEquipHP()
     {
-        float oldMaxHP = maxHP;
-
         equipHP = CalculateEquipHP();
         maxHP = baseMaxHP + equipHP;
 
-        if (oldMaxHP > 0f)
-        {
-            float ratio = currentHP / oldMaxHP;
-            currentHP = Mathf.Round(maxHP * ratio);
-        }
-        else
-        {
-            currentHP = maxHP;
-        }
-
         currentHP = Mathf.Clamp(currentHP, 0f, maxHP);
+
+        currentHP = Mathf.Round(currentHP);
+        maxHP = Mathf.Round(maxHP);
 
         SyncToBaseState();
 

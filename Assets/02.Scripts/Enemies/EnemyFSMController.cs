@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.Multiplayer.PlayMode;
 using UnityEngine;
 
 public enum EnemyState
@@ -33,6 +34,7 @@ public class EnemyFSMController : MonoBehaviour
     [SerializeField] private float idleDistance = 10f;
     [SerializeField] AudioClip chaseSound;
     [SerializeField] AudioClip walkSound;
+    [SerializeField] float walkSoundDelay = 0.27f;
     public event Action<EnemyState> OnEnemyStateChanged;
 
     public event Action OnAttack;
@@ -43,7 +45,7 @@ public class EnemyFSMController : MonoBehaviour
     private Vector2 originPos;
     Coroutine attackCoroutine;
 
-    [SerializeField] float stuckCheckTime = 1.5f;
+    [SerializeField] float stuckCheckTime = 0.2f;
     [SerializeField] float stuckMoveThreshold = 0.05f;
 
     private Vector2 lastPosition;
@@ -174,7 +176,7 @@ public class EnemyFSMController : MonoBehaviour
 
         if (movedDistance < stuckMoveThreshold)
         {
-            stuckTimer += Time.deltaTime;
+            stuckTimer += Time.fixedDeltaTime;
         }
         else
         {
@@ -215,7 +217,7 @@ public class EnemyFSMController : MonoBehaviour
 
         RaycastHit2D hit2D = Physics2D.Linecast(transform.position, targetPos.position, targetLayer);
 
-        //Debug.DrawLine(transform.position, hit2D.point, Color.red);
+        Debug.DrawLine(transform.position, hit2D.point, Color.red);
         if (hit2D.collider.gameObject.layer != targetPos.gameObject.layer)
         {
             return false;
@@ -242,6 +244,10 @@ public class EnemyFSMController : MonoBehaviour
         switch (currentState)
         {
             case EnemyState.Idle:
+                if (!CanSeeTarget())
+                {
+                    return;
+                }
                 if (distanceToTarget <= chaseDistance)
                 {
                     TransitionTo(EnemyState.Chase);
@@ -275,28 +281,42 @@ public class EnemyFSMController : MonoBehaviour
             targetPos = playerObject.transform;
         }
     }
-    float walkdelay = 0.24f;
+
     float walktimer = 0f;
     private void HandleChaseMovement()
     {
         if (targetPos == null || rb2D == null) return;
         if (currentState != EnemyState.Chase) return;
 
-        if (IsStuck())
-        {
-            TransitionTo(EnemyState.Return);
-            return;
-        }
 
         CurrentDir = (Vector2)(targetPos.position - transform.position).normalized;
 
+        CurrentDir = ToTarget(CurrentDir);
+
         rb2D.MovePosition(rb2D.position + CurrentDir * moveSpeed * Time.fixedDeltaTime);
         walktimer += Time.fixedDeltaTime;
-        if(walktimer >= walkdelay && SoundManager.Instance)
+        if(walktimer >= walkSoundDelay && SoundManager.Instance)
         {
             SoundManager.Instance.PlaySfxOneShot(walkSound);
             walktimer = 0f;
         }
+    }
+
+    private Vector2 ToTarget(Vector2 currentDir)
+    {
+        if (IsStuck())
+        {
+            if(Mathf.Abs(currentDir.x) > Mathf.Abs(currentDir.y))
+            {
+                currentDir.x = 0;
+
+            }
+            else if(Mathf.Abs(currentDir.x) < Mathf.Abs(currentDir.y))
+            {
+                currentDir.y = 0;
+            }
+        }
+        return currentDir;
     }
 
     private float lastAttackTime;
@@ -346,6 +366,8 @@ public class EnemyFSMController : MonoBehaviour
     {
         if (CurrentState != EnemyState.Return) return;
         CurrentDir = (originPos - (Vector2)transform.position).normalized;
+
+        CurrentDir = ToTarget(CurrentDir);
 
         rb2D.MovePosition(rb2D.position + CurrentDir * moveSpeed * Time.fixedDeltaTime);
 

@@ -41,13 +41,25 @@ public class ItemDetailPanel : MonoBehaviour
         EscManager.Instance.PushPanel(gameObject);
         //gameObject.SetActive(true);
         iconImage.sprite = itemData.ItemIcon;
-        itemNameText.text = "이름 :\n" + itemData.DisplayName;
-        itemDescriptionText.text = "설명 :\n" + itemData.Description;
+        itemNameText.text = "이름\n" + itemData.DisplayName;
+        string description = "설명\n" + itemData.Description +"\n";
+        switch (itemData.Type)
+        {
+            case ItemType.Weapon: description += $"공격력 : {itemData.Damage}\n스테미나 소모량: {itemData.Value1}\n공격 쿨타임 : {itemData.AttackCoolDown}"; break;
+            case ItemType.Helmet:
+            case ItemType.Body:
+            case ItemType.Pents:
+            case ItemType.Shoes: description += $"추가 체력 : {itemData.Value1}"; break;
+            case ItemType.HPHeal: description += $"회복량 : {itemData.Value1}"; break;
+            case ItemType.BackPack: description += $"가방 크기 : {itemData.Value1}"; break;
+            case ItemType.Food: description += $"수분 : {itemData.Value2}\n허기 : {itemData.Value1}"; break;
+            default: break;
+        }
+        itemDescriptionText.text = description;
         currentSlotType = slotType;
         useBtn.gameObject.SetActive(true);
         switch (currentSlotType)
         {
-            case SlotType.None: break;
             case SlotType.Player: useBtnText.text = "Use"; break;
             case SlotType.Equip: useBtnText.text = "UnEquip"; break;
             default: useBtn.gameObject.SetActive(false); break;
@@ -59,7 +71,7 @@ public class ItemDetailPanel : MonoBehaviour
     {
         closeBtn.onClick.AddListener(() =>
         {
-            gameObject.SetActive(false);
+            EscManager.Instance.PopPanel();
         });
         useBtn.onClick.AddListener(() =>
         {
@@ -74,8 +86,8 @@ public class ItemDetailPanel : MonoBehaviour
             else if (currentSlotType == SlotType.Stash)
             {
                 //TODO::스테쉬에서 디테일 패널 유즈 사용
-                stashUI.RemoveItemSlot(Index);
-                itemClass.Use(inventory);
+                //stashUI.RemoveItemSlot(Index);
+                //itemClass.Use(inventory);
             }
             else if (currentSlotType == SlotType.Equip)
             {

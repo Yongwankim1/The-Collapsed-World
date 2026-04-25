@@ -87,6 +87,7 @@ public class SaveManager : MonoBehaviour
         Load();
         Save();
     }
+
     public void Init()
     {
         Debug.Log("새 게임 시작");

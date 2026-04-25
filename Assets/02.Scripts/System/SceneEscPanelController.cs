@@ -5,6 +5,8 @@ public class SceneEscPanelController : MonoBehaviour
     [SerializeField] GameObject escPanel;
     [SerializeField] PlayerHP playerHP;
     [SerializeField] GameObject exitCheckPanel;
+
+    [SerializeField] GameObject settingPanel;
     void Start()
     {
         if(playerHP ==null) playerHP = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHP>();
@@ -26,5 +28,12 @@ public class SceneEscPanelController : MonoBehaviour
     {
         if(playerHP == null) return;
         playerHP.TakeDamage(float.MaxValue);
+    }
+
+    public void OnSettingPanel()
+    {
+        if (!settingPanel || !EscManager.Instance) return;
+
+        EscManager.Instance.PushPanel(settingPanel);
     }
 }

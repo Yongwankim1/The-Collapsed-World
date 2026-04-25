@@ -17,7 +17,7 @@ MonoBehaviour:
     worldItemPrefab: {fileID: 0}
     itemID: Food01
     displayName: "\uBB3C"
-    description: "\uBA39\uC744 \uC218 \uC788\uB294 \uBB3C\uC785\uB2C8\uB2E4"
+    description: "\uB9C8\uC2E4 \uC218 \uC788\uB294 \uBB3C\uC785\uB2C8\uB2E4"
     maxStack: 1
     itemIcon: {fileID: 8509550459451208454, guid: 959eb8ccadb8f574a9e272fd5b551b44, type: 3}
     value1: 0

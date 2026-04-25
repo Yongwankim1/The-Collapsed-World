@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,7 +6,7 @@ public class PlayerHPUI : MonoBehaviour
 {
     [SerializeField] PlayerHP playerHP;
     [SerializeField] Image hpBar;
-
+    [SerializeField] TextMeshProUGUI hpText;
     private void Start()
     {
         if (playerHP == null)
@@ -28,5 +29,6 @@ public class PlayerHPUI : MonoBehaviour
     void UpdateHP(float maxValue, float currentValue)
     {
         hpBar.fillAmount = currentValue / maxValue;
+        hpText.text = $"{currentValue}/{maxValue}";
     }
 }

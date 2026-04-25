@@ -51,6 +51,11 @@ public class SlotClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
             {
                 slotManager.QuickSlotChange(slotUI.SlotData.SlotIndex, slotUI.SlotData.ItemID, slotUI.SlotData.Amount, slotUI.SlotType);
             }
+            if(slotUI.SlotType == SlotType.Trade)
+            {
+                slotManager.OnDetailPanel(slotUI.SlotData.ItemID, slotUI.SlotData.SlotIndex, slotUI.SlotType);
+                return;
+            }
             if (slotUI.SlotType != SlotType.Player) return;
             //TODO:: 인벤토리에서 아이템 사용
             if (slotManager.InventoryUseItem(slotUI.SlotData.ItemID, slotUI.SlotData.SlotIndex, 1))

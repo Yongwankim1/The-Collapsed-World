@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,7 @@ public class PlayerStaminaUI : MonoBehaviour
     [SerializeField] Image staminaBar;
     [SerializeField] Color originColor;
     [SerializeField] Color staminaDepletedColor;
+    [SerializeField] TextMeshProUGUI staminaText;
     private void Awake()
     {
         if(playerStamina == null)
@@ -16,6 +18,7 @@ public class PlayerStaminaUI : MonoBehaviour
     {
         if (playerStamina != null)
             playerStamina.OnChangeStamina += UpdateSP;
+        UpdateSP(100, 100);
     }
 
     private void OnDisable()
@@ -35,6 +38,7 @@ public class PlayerStaminaUI : MonoBehaviour
         {
             staminaBar.color = originColor;
         }
+        staminaText.text = $"{currentValue:00}/{maxValue}";
     }
 
 

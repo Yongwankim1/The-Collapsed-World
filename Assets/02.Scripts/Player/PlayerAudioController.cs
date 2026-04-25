@@ -70,6 +70,7 @@ public class PlayerAudioController : MonoBehaviour
 
             if(SoundManager.Instance.IsMasterMute || SoundManager.Instance.IsSfxMute)
             {
+                yield return new WaitForSeconds(0.23f);
                 continue;
             }
             playerAudioSource.Play();
@@ -86,6 +87,7 @@ public class PlayerAudioController : MonoBehaviour
             if (Keyboard.current.shiftKey.IsPressed()) break;
             if (SoundManager.Instance.IsMasterMute || SoundManager.Instance.IsSfxMute)
             {
+                yield return new WaitForSeconds(0.3f);
                 continue;
             }
 

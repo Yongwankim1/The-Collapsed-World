@@ -200,6 +200,8 @@ MonoBehaviour:
   attackAfterDelay: 1.1
   idleDistance: 10
   chaseSound: {fileID: 0}
+  walkSound: {fileID: 8300000, guid: 3bf45824ce552a24595f8239c8c0645a, type: 3}
+  walkSoundDelay: 0.27
   stuckCheckTime: 1.5
   stuckMoveThreshold: 0.05
 --- !u!114 &1102070886565200905

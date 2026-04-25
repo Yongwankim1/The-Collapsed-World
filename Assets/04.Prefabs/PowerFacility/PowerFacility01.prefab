@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 924080883358227192}
   - component: {fileID: 8912122020677773716}
   - component: {fileID: 2715895026030095595}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: PowerFacility01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -173,7 +173,10 @@ MonoBehaviour:
   requirementMaterials:
     ItemID:
     - Material01
-    Amount: 03000000
+    - Material02
+    - Material03
+    - Material04
+    Amount: 02000000020000000200000002000000
   interactionUI: {fileID: 0}
   isRepair: 0
 --- !u!68 &924080883358227192

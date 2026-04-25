@@ -27,7 +27,7 @@ public class PlayerStamina : MonoBehaviour
     public bool IsStaminaDepleted {  get; private set; }
 
     Coroutine staminaIncrease;
-    private void Start()
+    private void Awake()
     {
         Init();
     }

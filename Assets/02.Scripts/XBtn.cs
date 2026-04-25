@@ -13,7 +13,7 @@ public class XBtn : MonoBehaviour
     {
         btn.onClick.AddListener(() =>
         {
-            //closePanel.SetActive(false);
+            closePanel.SetActive(false);
             EscManager.Instance.PopPanel();
         });
     }
