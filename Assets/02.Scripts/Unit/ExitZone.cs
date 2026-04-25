@@ -13,7 +13,7 @@ public class ExitZone : MonoBehaviour, IInteractable
     IEnumerator Exit()
     {
         yield return new WaitForSeconds(exitTimer);
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("ResultScene");
     }
     void OnTriggerExit2D(Collider2D other)
     {

@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 895c1dd856d33654690efb159e88f26a, type: 3}
+  m_Name: shoes03
+  m_EditorClassIdentifier: Assembly-CSharp::EquipmentScriptable
+  ItemData:
+    type: 6
+    worldItemPrefab: {fileID: 0}
+    itemID: shoes03
+    displayName: "\uB354 \uC88B\uC740 \uAC00\uC8FD \uC2E0\uBC1C"
+    description: "\uC5C5\uADF8\uB808\uC774\uB4DC\uB41C \uAC00\uC8FD \uC2E0\uBC1C"
+    maxStack: 1
+    itemIcon: {fileID: 5380149421133584944, guid: c1d654a7ebb64dc4fa8f56f3b5b1f796, type: 3}
+    value1: 25
+    value2: 0
+    damage: 0
+    speed: 0
+    attackCoolDown: 0
+    weaponEffect: {fileID: 0}
+    weaponPrefab: {fileID: 0}
+    attackType: 0
+    itemPrice: 5000

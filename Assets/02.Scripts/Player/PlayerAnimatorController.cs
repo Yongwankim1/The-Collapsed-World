@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerAnimatorController : MonoBehaviour
 {
+    [SerializeField] AudioClip footStep;
     [SerializeField] Animator targetAnimator;
     [SerializeField] PlayerInputReader inputReader;
     [SerializeField] PlayerHP playerHP;

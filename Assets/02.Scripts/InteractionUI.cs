@@ -52,12 +52,10 @@ public class InteractionUI : MonoBehaviour
     }
     private void OnEnable()
     {
-        inputReader.DontAction.Push(true);
     }
     private void OnDisable()
     {
         facilityBase = null;
-        inputReader.DontAction.Pop();
         foreach(var item in slots)
         {
             if(item == null) continue;

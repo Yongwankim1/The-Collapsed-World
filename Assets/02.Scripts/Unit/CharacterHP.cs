@@ -11,7 +11,7 @@ public class CharacterHP : MonoBehaviour, IDamageable
     public bool IsDead => currentHP <= 0;
     public event Action OnDied;
     public event Action<float> OnHit;
-
+    public float MaxHP => maxHP;
     public virtual void TakeDamage(float amount)
     {
         if(IsDead || amount <= 0) return;

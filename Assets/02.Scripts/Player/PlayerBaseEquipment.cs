@@ -25,6 +25,41 @@ public class PlayerBaseEquipment : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    public EquipmentData GetData()
+    {
+        return new EquipmentData
+        {
+            head = HeadArmorID,
+            body = BodyArmorID,
+            pents = PentsArmorID,
+            shoes = ShoesArmorID,
+            backpack = BackPackID,
+            weapon = WeaponID
+        };
+    }
+
+    public void LoadData(EquipmentData data)
+    {
+        HeadArmorID = data.head;
+        BodyArmorID = data.body;
+        PentsArmorID = data.pents;
+        ShoesArmorID = data.shoes;
+        BackPackID = data.backpack;
+        WeaponID = data.weapon;
+        OnChangeBackpack?.Invoke();
+        OnChangeEquip?.Invoke();
+    }
+    public void OnDie()
+    {
+        WeaponID = string.Empty;
+        HeadArmorID = string.Empty;
+        BodyArmorID = string.Empty;
+        ShoesArmorID = string.Empty;
+        PentsArmorID = string.Empty;
+        BackPackID = string.Empty;
+        OnChangeBackpack?.Invoke();
+        OnChangeEquip?.Invoke();
+    }
     public bool UnEquip(int index)
     {
         if (index == 0) HeadArmorID = string.Empty;

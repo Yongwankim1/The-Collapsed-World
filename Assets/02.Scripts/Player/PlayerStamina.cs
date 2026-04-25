@@ -80,14 +80,15 @@ public class PlayerStamina : MonoBehaviour
     private void SetWalkStamina(float walkValue)
     {
         if (IsStaminaDepleted) return;
-        if (inputReader.MoveAction())
-        {
-            DeCreaseCurrentStamina(walkValue);
-        }
-        else
-        {
-            InCreaseCurrentStamina();
-        }
+        InCreaseCurrentStamina();
+        //if (inputReader.MoveAction())
+        //{
+        //    DeCreaseCurrentStamina(walkValue);
+        //}
+        //else
+        //{
+        //    InCreaseCurrentStamina();
+        //}
     }
 
 
@@ -206,7 +207,7 @@ public class PlayerStamina : MonoBehaviour
             OnChangeStamina?.Invoke(maxStamina, currentStamina);
             if (isDebug)
                 Debug.Log($"스테미나 증가량 {inCreaseValue} 남은 스테미나{currentStamina} 최대 스테미나 {maxStamina}");
-            if(currentStamina >= maxStamina / 2)
+            if(currentStamina >= maxStamina / 4)
             {
                 IsStaminaDepleted = false;
                 if (staminaIncrease == null)

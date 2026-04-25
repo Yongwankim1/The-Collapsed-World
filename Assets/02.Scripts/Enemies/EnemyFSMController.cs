@@ -9,7 +9,8 @@ public enum EnemyState
     Attack,
     NuckBack,
     Stun,
-    Dead
+    Dead,
+    Return,
 }
 public class EnemyFSMController : MonoBehaviour
 {
@@ -18,17 +19,20 @@ public class EnemyFSMController : MonoBehaviour
     [SerializeField] EnemyAttack enemyAttack;
     [SerializeField] private Rigidbody2D rb2D;
     [SerializeField] private Transform targetPos;
-    //공격 구현 안됨
 
     [Header("FSM")]
     [SerializeField] private EnemyState currentState = EnemyState.Idle;
     [SerializeField] private float chaseDistance = 5f;
-    [SerializeField] private float idleDistance = 3f;
     [SerializeField] private float moveSpeed = 1f;
     [SerializeField] private float attackDistance = 1.5f;
 
     [SerializeField] LayerMask targetLayer;
+    [SerializeField] private float attackAfterDelay;
 
+    [Header("SFX")]
+    [SerializeField] private float idleDistance = 10f;
+    [SerializeField] AudioClip chaseSound;
+    [SerializeField] AudioClip walkSound;
     public event Action<EnemyState> OnEnemyStateChanged;
 
     public event Action OnAttack;
@@ -36,12 +40,27 @@ public class EnemyFSMController : MonoBehaviour
     public Vector2 CurrentDir {  get; private set; }
     public void SetCurrentState(EnemyState state) => TransitionTo(state);
 
-
+    private Vector2 originPos;
     Coroutine attackCoroutine;
+
+    [SerializeField] float stuckCheckTime = 1.5f;
+    [SerializeField] float stuckMoveThreshold = 0.05f;
+
+    private Vector2 lastPosition;
+    private float stuckTimer;
+
+
+
     private void Awake()
     {
         if(enemyHP == null) enemyHP = GetComponentInChildren<EnemyHP>();
         if(rb2D == null) rb2D = GetComponentInChildren<Rigidbody2D>();
+        if(enemyAttack == null) enemyAttack = GetComponent<EnemyAttack>();
+    }
+    private void Start()
+    {
+        StartCoroutine(CoIdleSoundSFXPlay());
+        originPos = transform.position;
     }
     private void OnEnable()
     {
@@ -64,7 +83,18 @@ public class EnemyFSMController : MonoBehaviour
         if (currentState == nextState) return;
 
         currentState = nextState;
+
+        if (currentState == EnemyState.Chase)
+        {
+            ResetStuckCheck();
+        }
+
         OnEnemyStateChanged?.Invoke(currentState);
+    }
+    private void ResetStuckCheck()
+    {
+        lastPosition = transform.position;
+        stuckTimer = 0f;
     }
     private void FixedUpdate()
     {
@@ -83,11 +113,37 @@ public class EnemyFSMController : MonoBehaviour
         }
         if (currentState == EnemyState.Attack)
         {
-            HandleAttack();
+            HandleAttack(targetPos);
+            return;
+        }
+        if (currentState == EnemyState.Return)
+        {
+            HandleReturnMovement();
             return;
         }
     }
-
+    private bool TargetInIdleDistance()
+    {
+        if(targetPos == null) return false;
+        float distanceToTarget = Vector2.Distance(transform.position, targetPos.position);
+        if (distanceToTarget <= chaseDistance && chaseSound != null)
+        {
+            return true;
+        }
+        return false;
+    }
+    IEnumerator CoIdleSoundSFXPlay()
+    {
+        while (true)
+        {
+            yield return new WaitUntil(()=> TargetInIdleDistance());
+            if (targetPos != null && currentState == EnemyState.Chase)
+            {
+                SoundManager.Instance.PlaySfxOneShot(chaseSound,0.4f);
+            }
+            yield return new WaitUntil(() => currentState == EnemyState.Idle);
+        }
+    }
     private void Update()
     {
         if (currentState == EnemyState.Dead) return;
@@ -96,7 +152,7 @@ public class EnemyFSMController : MonoBehaviour
             TryFindTarget();
             return;
         }
-
+        if (currentState == EnemyState.Return) return;
         EvaluateStateTransition();
     }
     Coroutine stunCoroutine = null;
@@ -112,9 +168,28 @@ public class EnemyFSMController : MonoBehaviour
             stunCoroutine = StartCoroutine(SetStun());
         }
     }
+    private bool IsStuck()
+    {
+        float movedDistance = Vector2.Distance(transform.position, lastPosition);
+
+        if (movedDistance < stuckMoveThreshold)
+        {
+            stuckTimer += Time.deltaTime;
+        }
+        else
+        {
+            stuckTimer = 0f;
+            lastPosition = transform.position;
+        }
+
+        return stuckTimer >= stuckCheckTime;
+    }
     IEnumerator SetStun()
     {
-        currentState = EnemyState.Stun;
+        TransitionTo(EnemyState.Stun);
+        if(attackCoroutine != null)
+            StopCoroutine(attackCoroutine);
+        attackCoroutine = null;
         CurrentDir = Vector2.zero;
         float distanceToTarget = Vector2.Distance(transform.position, targetPos.position);
 
@@ -126,7 +201,7 @@ public class EnemyFSMController : MonoBehaviour
         }
         else if (distanceToTarget > chaseDistance * 1.2f)
         {
-            TransitionTo(EnemyState.Idle);
+            TransitionTo(EnemyState.Return);
         }
         else
         {
@@ -140,7 +215,7 @@ public class EnemyFSMController : MonoBehaviour
 
         RaycastHit2D hit2D = Physics2D.Linecast(transform.position, targetPos.position, targetLayer);
 
-        Debug.DrawLine(transform.position, hit2D.point, Color.red);
+        //Debug.DrawLine(transform.position, hit2D.point, Color.red);
         if (hit2D.collider.gameObject.layer != targetPos.gameObject.layer)
         {
             return false;
@@ -150,12 +225,17 @@ public class EnemyFSMController : MonoBehaviour
     private void EvaluateStateTransition()
     {
         if (targetPos == null) return;
-        
+        if (currentState == EnemyState.Dead) return;
+        if (enemyHP.IsDead)
+        {
+            TransitionTo(EnemyState.Dead);
+            return;
+        }
 
         float distanceToTarget = Vector2.Distance(transform.position, targetPos.position);
-        if (!CanSeeTarget())
+        if (!CanSeeTarget() && currentState == EnemyState.Chase)
         {
-            TransitionTo(EnemyState.Idle);
+            TransitionTo(EnemyState.Return);
             return;
         }
 
@@ -174,11 +254,11 @@ public class EnemyFSMController : MonoBehaviour
                 }
                 else if (distanceToTarget > chaseDistance * 1.2f)
                 {
-                    TransitionTo(EnemyState.Idle);
+                    TransitionTo(EnemyState.Return);
                 }
                 break;
             case EnemyState.Attack:
-                if (distanceToTarget > attackDistance)
+                if (distanceToTarget > attackDistance && attackCoroutine == null)
                 {
                     TransitionTo(EnemyState.Chase);
                 }
@@ -195,37 +275,60 @@ public class EnemyFSMController : MonoBehaviour
             targetPos = playerObject.transform;
         }
     }
-
+    float walkdelay = 0.24f;
+    float walktimer = 0f;
     private void HandleChaseMovement()
     {
-        rb2D.AddForce(Vector2.zero);
-        if(targetPos == null || rb2D == null) return;
+        if (targetPos == null || rb2D == null) return;
         if (currentState != EnemyState.Chase) return;
 
+        if (IsStuck())
+        {
+            TransitionTo(EnemyState.Return);
+            return;
+        }
+
         CurrentDir = (Vector2)(targetPos.position - transform.position).normalized;
-        
+
         rb2D.MovePosition(rb2D.position + CurrentDir * moveSpeed * Time.fixedDeltaTime);
+        walktimer += Time.fixedDeltaTime;
+        if(walktimer >= walkdelay && SoundManager.Instance)
+        {
+            SoundManager.Instance.PlaySfxOneShot(walkSound);
+            walktimer = 0f;
+        }
     }
-    private void HandleAttack()
+
+    private float lastAttackTime;
+    private void HandleAttack(Transform targetTansform)
     {
+        if (lastAttackTime > Time.time) return;
         if (attackCoroutine == null)
         {
-            attackCoroutine = StartCoroutine(Attack());
+            attackCoroutine = StartCoroutine(Attack(targetTansform));
         }
 
     }
-    IEnumerator Attack()
+    IEnumerator Attack(Transform targetTansform)
     {
         CurrentDir = Vector2.zero;
-        IDamageable damageable = targetPos.GetComponentInChildren<IDamageable>();
 
-        if (damageable == null) yield break;
+        if (enemyHP.IsDead)
+        {
+            attackCoroutine = null;
+            yield break;
+        }
 
-        if (enemyHP.IsDead) yield break;
-        enemyAttack.OnAttack(damageable);
+        yield return new WaitForSeconds(0.2f);
         OnAttack?.Invoke();
-        yield return new WaitForSeconds(enemyAttack.AttackCoolDown);
+        enemyAttack.BeginAttack(targetTansform, out HitBox hitBox);
+
+        yield return new WaitForSeconds(0.1f);
+        enemyAttack.EndAttack(hitBox);
+
+        yield return new WaitForSeconds(attackAfterDelay);
         attackCoroutine = null;
+        lastAttackTime = Time.time + enemyAttack.AttackCoolDown;
     }
 
 
@@ -239,11 +342,23 @@ public class EnemyFSMController : MonoBehaviour
         }
 
     }
+    private void HandleReturnMovement()
+    {
+        if (CurrentState != EnemyState.Return) return;
+        CurrentDir = (originPos - (Vector2)transform.position).normalized;
 
+        rb2D.MovePosition(rb2D.position + CurrentDir * moveSpeed * Time.fixedDeltaTime);
+
+        float distance = Vector2.Distance(transform.position, originPos);
+        if (distance <= 0.1f)
+        {
+            enemyHP.Heal((int)enemyHP.MaxHP);
+            TransitionTo(EnemyState.Idle);
+            return;
+        }
+    }
     void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.brown;
-        Gizmos.DrawWireSphere(transform.position,idleDistance);
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackDistance);
         Gizmos.color = Color.blue;
@@ -251,6 +366,7 @@ public class EnemyFSMController : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, chaseDistance * 1.2f);
         Gizmos.color = Color.black;
-        if (targetPos != null) Gizmos.DrawLine(transform.position, targetPos.position);
+        Gizmos.DrawWireSphere(transform.position,idleDistance);
+        //if (targetPos != null) Gizmos.DrawLine(transform.position, targetPos.position);
     }
 }

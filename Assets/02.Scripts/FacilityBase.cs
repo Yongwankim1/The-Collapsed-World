@@ -6,7 +6,10 @@ public abstract class FacilityBase : MonoBehaviour, IInteractable
     [SerializeField] protected RequirementMaterials requirementMaterials;
     [SerializeField] protected InteractionUI interactionUI;
     [SerializeField] protected bool isRepair;
-
+    void Awake()
+    {
+        if (interactionUI == null) interactionUI = FindFirstObjectByType<InteractionUI>(FindObjectsInactive.Include);
+    }
     public RequirementMaterials RequirementMaterials => requirementMaterials;
     public bool IsRepair => isRepair;
     private Inventory playerInventory;

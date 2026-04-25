@@ -33,6 +33,7 @@ public class SlotDraggable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (changer == null) return;
+        if (mySlot.SlotType == SlotType.Trade || mySlot.SlotType == SlotType.Container) return;
         changer.SelectDrag = mySlot.SlotData;
         changer.DragType = mySlot.SlotType;
 
@@ -47,11 +48,13 @@ public class SlotDraggable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (mySlot.SlotType == SlotType.Trade || mySlot.SlotType == SlotType.Container) return;
         rect.position = eventData.position;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (mySlot.SlotType == SlotType.Trade || mySlot.SlotType == SlotType.Container) return;
         transform.SetParent(previousParent);
         rect.position = previousParent.GetComponent<RectTransform>().position;
         cg.alpha = 1.0f;

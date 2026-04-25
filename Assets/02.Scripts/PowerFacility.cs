@@ -4,7 +4,7 @@ public class PowerFacility : FacilityBase
     {
         if (StageManager.Instance != null)
         {
-            isRepair = StageManager.Instance.stages[StageManager.Instance.CurrentStage].IsPowerRepair;
+            isRepair = StageManager.Instance.Stages[StageManager.Instance.CurrentStage].IsPowerRepair;
         }
     }
 
@@ -12,7 +12,7 @@ public class PowerFacility : FacilityBase
     {
         if (StageManager.Instance != null)
         {
-            StageManager.Instance.stages[StageManager.Instance.CurrentStage].IsPowerRepair = isRepair;
+            StageManager.Instance.Stages[StageManager.Instance.CurrentStage].IsPowerRepair = isRepair;
         }
     }
 
@@ -21,7 +21,7 @@ public class PowerFacility : FacilityBase
         isRepair = true;
         if (StageManager.Instance != null)
         {
-            StageManager.Instance.stages[StageManager.Instance.CurrentStage].IsPowerRepair = isRepair;
+            StageManager.Instance.Stages[StageManager.Instance.CurrentStage].IsPowerRepair = isRepair;
         }
     }
 }

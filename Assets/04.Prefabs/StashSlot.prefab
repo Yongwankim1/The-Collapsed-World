@@ -90,6 +90,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7579e31c3a649644cab62bfb593244f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlotUI
+  animator: {fileID: 0}
+  isCheckParameterName: IsCheck
   iconImage: {fileID: 6861670501500185613}
   amountText: {fileID: 2138031804882820805}
   slotType: 0
@@ -109,6 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a8c1f1d194b4d0489e9b4a21cd599e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlotClick
+  btnHighlight: {fileID: 8300000, guid: 522fdc081e248994c9df33449b25ca71, type: 3}
 --- !u!1 &3317638599872223511
 GameObject:
   m_ObjectHideFlags: 0

@@ -55,12 +55,24 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e615833cc2df01548be7f9c8f734bb04, type: 2}
   registeredHelmetData:
   - {fileID: 11400000, guid: 9d881132559a1384b89bcaa25ef46989, type: 2}
-  registeredBodyData: []
-  registeredPentsData: []
-  registeredShoesData: []
+  - {fileID: 11400000, guid: b1bc35840bb19c446add8eab0c50a362, type: 2}
+  registeredBodyData:
+  - {fileID: 11400000, guid: 8f665cdce94ab384f816585132b6ec03, type: 2}
+  - {fileID: 11400000, guid: ad660641581eca841abcd4d1c41bb882, type: 2}
+  - {fileID: 11400000, guid: 573b9d956d74122478840c13819175a8, type: 2}
+  registeredPentsData:
+  - {fileID: 11400000, guid: e5ab5434e443a7e45a1bd86ff6e8f907, type: 2}
+  - {fileID: 11400000, guid: 958ca319fcaceba42af7ef6c067766e8, type: 2}
+  - {fileID: 11400000, guid: 29235b91faaeae44f8ada76b20b9113e, type: 2}
+  registeredShoesData:
+  - {fileID: 11400000, guid: ef93730431f4aa44f8b8be36047914c9, type: 2}
+  - {fileID: 11400000, guid: 3b0ca55accfda9e468d859c00c72cd79, type: 2}
+  - {fileID: 11400000, guid: f38a9ace3b0ce4749b7bedefd7fd2a65, type: 2}
   registeredBulletData: []
   registeredHPHealData:
   - {fileID: 11400000, guid: 5544db859dd3e984d8aade3333731989, type: 2}
+  - {fileID: 11400000, guid: a939c7e1566e95840abc61353ebabe8b, type: 2}
+  - {fileID: 11400000, guid: 2fceb4770d8f0f2448779fa1582e3ca0, type: 2}
   registeredBandageData: []
   registeredSplintData: []
   registeredVaccineData: []
@@ -68,3 +80,13 @@ MonoBehaviour:
   registeredMaterialData:
   - {fileID: 11400000, guid: be7f036421c8db1408f385080175a006, type: 2}
   - {fileID: 11400000, guid: c44651e6c5b2ade43aaba9e5a48fd8f7, type: 2}
+  - {fileID: 11400000, guid: 87acaa2e3ec32a34c9d6557615983e46, type: 2}
+  - {fileID: 11400000, guid: d6f9ca63789e5e345b9df67571ab5886, type: 2}
+  registeredFoodData:
+  - {fileID: 11400000, guid: eb3a1ad5a226b31478d9305b00fbe6a6, type: 2}
+  - {fileID: 11400000, guid: aae50ff8359822a46869f488c5f11c1b, type: 2}
+  - {fileID: 11400000, guid: 2de52fb55d5915f429460592bd59ad93, type: 2}
+  - {fileID: 11400000, guid: 100fb322fe245f942bbdc8f4acc67be7, type: 2}
+  - {fileID: 11400000, guid: 36026f73473ebd246ab1c33a45467177, type: 2}
+  - {fileID: 11400000, guid: 046ca54158bfb20498481ad6d6ac89f0, type: 2}
+  - {fileID: 11400000, guid: 01c077fed74e09e409d163ae19857db2, type: 2}

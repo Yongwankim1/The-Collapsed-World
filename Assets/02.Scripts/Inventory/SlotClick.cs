@@ -8,6 +8,7 @@ public class SlotClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
     Image image;
     ItemSlotManager slotManager;
     SlotUI slotUI;
+    [SerializeField] AudioClip btnHighlight;
     void Awake()
     {
         slotUI = GetComponent<SlotUI>();
@@ -35,12 +36,21 @@ public class SlotClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
             }
             else
             {
+                if(slotUI.SlotType == SlotType.Trade)
+                {
+                    slotManager.SelectTradeItem(slotUI.SlotData.ItemID);
+                    return;
+                }
                 //TODO:: 상세보기 패널 활성화
                 slotManager.OnDetailPanel(slotUI.SlotData.ItemID, slotUI.SlotData.SlotIndex, slotUI.SlotType);
             }
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
+            if(slotUI.SlotType == SlotType.Container)
+            {
+                slotManager.QuickSlotChange(slotUI.SlotData.SlotIndex, slotUI.SlotData.ItemID, slotUI.SlotData.Amount, slotUI.SlotType);
+            }
             if (slotUI.SlotType != SlotType.Player) return;
             //TODO:: 인벤토리에서 아이템 사용
             if (slotManager.InventoryUseItem(slotUI.SlotData.ItemID, slotUI.SlotData.SlotIndex, 1))
@@ -61,10 +71,18 @@ public class SlotClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
     public void OnPointerEnter(PointerEventData eventData)
     {
         image.color = Color.yellow;
+        if(SoundManager.Instance !=null && btnHighlight && !string.IsNullOrEmpty(slotUI.SlotData.ItemID))
+        {
+            SoundManager.Instance.PlaySfxOneShot(btnHighlight,0.7f);
+        }
     }
 
     void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
     {
         image.color = Color.white;
+        //if (SoundManager.Instance != null && btnHighlight && !string.IsNullOrEmpty(slotUI.SlotData.ItemID))
+        //{
+        //    SoundManager.Instance.StopSfx();
+        //}
     }
 }

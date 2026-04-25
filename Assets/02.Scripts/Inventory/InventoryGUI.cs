@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class InventoryGUI : MonoBehaviour
@@ -11,9 +12,10 @@ public class InventoryGUI : MonoBehaviour
 
     [SerializeField] GameObject enemyInventoryUI;
     [SerializeField] Transform enemySlotParent;
-    [SerializeField] EnemyInventory enemyInventory;
+    [SerializeField] RandomDropInventory enemyInventory;
     [SerializeField] ItemSlotManager slotManager;
 
+    [SerializeField] TextMeshProUGUI inventoryNameText;
     private SlotUI[] slots;
     private SlotUI[] enemySlots;
 
@@ -31,7 +33,6 @@ public class InventoryGUI : MonoBehaviour
     }
     private void OnEnable()
     {
-        if (inputReader != null) inputReader.DontAction.Push(true);
         if (enemyInventoryUI != null) enemyInventoryUI.SetActive(false);
         if(inventory != null)
         {
@@ -44,7 +45,6 @@ public class InventoryGUI : MonoBehaviour
 
     private void OnDisable()
     {
-        if (inputReader != null) inputReader.DontAction.Pop();
         if (inventory != null)
         {
             inventory.OnBackPackChanage -= BackPackSlotChanage;
@@ -56,13 +56,14 @@ public class InventoryGUI : MonoBehaviour
             enemyInventoryUI.SetActive(false);
         }
     }
-    public void OnEnemyInventory(EnemyInventory enemyInventory)
+    public void OnEnemyInventory(RandomDropInventory enemyInventory)
     {
         if (enemyInventoryUI == null)
         {
             Debug.LogWarning("적 인벤토리 참조 안됨");
             return;
         }
+        inventoryNameText.text = enemyInventory.InventoryName;
         this.enemyInventory = enemyInventory;
         slotManager.Initialize(enemyInventory);
         enemyInventoryUI.SetActive(true);

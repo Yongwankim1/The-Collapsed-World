@@ -67,6 +67,7 @@ public class PoolingManager : MonoBehaviour
     {
         if (!DeQueue(poolingObject, out GameObject go))
         {
+            go = null;
             Debug.LogWarning("풀에서 꺼낼 오브젝트가 없습니다");
         }
         return go;

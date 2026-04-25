@@ -3,7 +3,7 @@ using UnityEngine;
 public class EnemyHP : CharacterHP
 {
     [SerializeField] EnemyLevelScriptable levelScriptable;
-
+    [SerializeField] AudioClip zombieDieClip;
     private void Start()
     {
         Initialize();
@@ -23,6 +23,12 @@ public class EnemyHP : CharacterHP
     protected override void Died()
     {
         base.Died();//액션 이벤트 호출
-
+        if(SoundManager.Instance && zombieDieClip)
+            SoundManager.Instance.PlaySfxOneShot(zombieDieClip);
+        if (ResultManager.Instance != null)
+        {
+            string name = gameObject.name;
+            ResultManager.Instance.EnqueueKillLog(name);
+        }
     }
 }

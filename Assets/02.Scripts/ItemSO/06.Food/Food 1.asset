@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f09b1aaa874236145b97142b235d848c, type: 3}
+  m_Name: Food 1
+  m_EditorClassIdentifier: Assembly-CSharp::FoddScriptable
+  ItemData:
+    type: 14
+    worldItemPrefab: {fileID: 0}
+    itemID: Food02
+    displayName: "\uCE94"
+    description: "\uBA39\uC744 \uC218 \uC788\uB294 \uD1B5\uC870\uB9BC\uCE94"
+    maxStack: 1
+    itemIcon: {fileID: 8989816755327674316, guid: 3b4801ee3646abe499af7f0423e22360, type: 3}
+    value1: 30
+    value2: 10
+    damage: 0
+    speed: 0
+    attackCoolDown: 0
+    weaponEffect: {fileID: 0}
+    weaponPrefab: {fileID: 0}
+    attackType: 0
+    itemPrice: 500

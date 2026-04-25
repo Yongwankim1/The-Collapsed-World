@@ -38,17 +38,19 @@ public class ItemDetailPanel : MonoBehaviour
         }
         this.itemID = itemID;
         Index = index;
-        gameObject.SetActive(true);
+        EscManager.Instance.PushPanel(gameObject);
+        //gameObject.SetActive(true);
         iconImage.sprite = itemData.ItemIcon;
         itemNameText.text = "이름 :\n" + itemData.DisplayName;
         itemDescriptionText.text = "설명 :\n" + itemData.Description;
         currentSlotType = slotType;
+        useBtn.gameObject.SetActive(true);
         switch (currentSlotType)
         {
             case SlotType.None: break;
             case SlotType.Player: useBtnText.text = "Use"; break;
-            case SlotType.Stash: useBtnText.text = "Use"; break;
             case SlotType.Equip: useBtnText.text = "UnEquip"; break;
+            default: useBtn.gameObject.SetActive(false); break;
         }
     }
 

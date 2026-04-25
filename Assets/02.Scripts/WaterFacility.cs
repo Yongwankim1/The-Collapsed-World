@@ -17,7 +17,7 @@ public class WaterFacility : FacilityBase
     {
         if (StageManager.Instance != null)
         {
-            isRepair = StageManager.Instance.stages[StageManager.Instance.CurrentStage].IsWaterRepair;
+            isRepair = StageManager.Instance.Stages[StageManager.Instance.CurrentStage].IsWaterRepair;
         }
         CheckRepair();
     }
@@ -26,7 +26,7 @@ public class WaterFacility : FacilityBase
     {
         if (StageManager.Instance != null)
         {
-            StageManager.Instance.stages[StageManager.Instance.CurrentStage].IsWaterRepair = isRepair;
+            StageManager.Instance.Stages[StageManager.Instance.CurrentStage].IsWaterRepair = isRepair;
         }
         CheckRepair();
     }
@@ -36,7 +36,7 @@ public class WaterFacility : FacilityBase
         isRepair = true;
         if (StageManager.Instance != null)
         {
-            StageManager.Instance.stages[StageManager.Instance.CurrentStage].IsWaterRepair = isRepair;
+            StageManager.Instance.Stages[StageManager.Instance.CurrentStage].IsWaterRepair = isRepair;
         }
         CheckRepair();
     }

@@ -27,11 +27,16 @@ public class PlayerSurvivalStat : MonoBehaviour
     public bool IsHunger => currentHunger <= 0;
     public bool IsHydration => currentHydration <= 0;
 
+    public event Action OnHungerDisplayChanged;
+    public event Action OnHydrationDisplayChanged;
     public event Action<float> OnHungerDebuff;
     public event Action<float> OnHydrationDebuff;
 
     Coroutine hungerDebuff;
     Coroutine hydrationDebuff;
+
+    float prevHungerDisplay;
+    float prevHydrationDisplay;
     private void Awake()
     {
         if(PlayerBaseState.Instacne == null)
@@ -46,6 +51,8 @@ public class PlayerSurvivalStat : MonoBehaviour
             currentHunger = PlayerBaseState.Instacne.hunger;
             currentHydration = PlayerBaseState.Instacne.Hydration;
         }
+        if (ResultManager.Instance != null)
+            ResultManager.Instance.SetTimer();
     }
     private void OnEnable()
     {
@@ -66,15 +73,52 @@ public class PlayerSurvivalStat : MonoBehaviour
     }
     private void Update()
     {
-        if(StageManager.Instance != null && !StageManager.Instance.stages[StageManager.Instance.CurrentStage].IsWaterRepair)
+        if(StageManager.Instance != null && !StageManager.Instance.Stages[StageManager.Instance.CurrentStage].IsWaterRepair)
             DecraseHydration(hydrationDecraseValue);
-        if (StageManager.Instance != null && !StageManager.Instance.stages[StageManager.Instance.CurrentStage].IsPowerRepair)
+        UpdateHydrationEvent();
+        if (StageManager.Instance != null && !StageManager.Instance.Stages[StageManager.Instance.CurrentStage].IsPowerRepair)
             DecraseHunger(hungerDecraseValue);
+        UpdateHungerEvent();
+        
 
         HungerDebuffCheck();
         HydrationDebuffCheck();
     }
 
+
+    void UpdateHungerEvent()
+    {
+        float currentDisplay = Mathf.Round(currentHunger * 10f) / 10f;
+
+        if (currentDisplay != prevHungerDisplay)
+        {
+            prevHungerDisplay = currentDisplay;
+            OnHungerDisplayChanged?.Invoke();
+        }
+    }
+    void UpdateHydrationEvent()
+    {
+        float currentDisplay = Mathf.Round(currentHunger * 10f) / 10f;
+
+        if (currentDisplay != prevHydrationDisplay)
+        {
+            prevHydrationDisplay = currentDisplay;
+            OnHydrationDisplayChanged?.Invoke();
+        }
+    }
+    public void IncraseHunger(float amount)
+    {
+        currentHunger += amount;
+        
+        currentHunger = Mathf.Clamp(currentHunger,0,maxHunger);
+
+    }
+    public void IncraseHyDration(float amount)
+    {
+        currentHydration += amount;
+
+        currentHydration = Mathf.Clamp(currentHydration,0,maxHydration);
+    }
 
     private float DecraseHunger(float amount)
     {

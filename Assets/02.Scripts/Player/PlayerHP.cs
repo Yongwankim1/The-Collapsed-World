@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerHP : CharacterHP
 {
@@ -61,6 +62,8 @@ public class PlayerHP : CharacterHP
         {
             baseMaxHP = PlayerBaseState.Instacne.BaseMaxHP;
             currentHP = PlayerBaseState.Instacne.CurrentHP;
+            maxHP = PlayerBaseState.Instacne.MaxHP;
+            equipHP = PlayerBaseState.Instacne.EquipHP;
         }
 
         RefreshEquipHP();
@@ -98,7 +101,7 @@ public class PlayerHP : CharacterHP
         if (oldMaxHP > 0f)
         {
             float ratio = currentHP / oldMaxHP;
-            currentHP = maxHP * ratio;
+            currentHP = Mathf.Round(maxHP * ratio);
         }
         else
         {
@@ -107,23 +110,41 @@ public class PlayerHP : CharacterHP
 
         currentHP = Mathf.Clamp(currentHP, 0f, maxHP);
 
+        SyncToBaseState();
+
         OnChangeHP?.Invoke(maxHP, currentHP);
     }
 
     public override void TakeDamage(float amount)
     {
         base.TakeDamage(amount);
+        SyncToBaseState();
         OnChangeHP?.Invoke(maxHP, currentHP);
     }
 
     public override void Heal(int amount)
     {
         base.Heal(amount);
+        SyncToBaseState();
         OnChangeHP?.Invoke(maxHP, currentHP);
     }
 
     protected override void Died()
     {
         base.Died();
+        if (PlayerInventoryData.Instance != null)
+            PlayerInventoryData.Instance.OnDie();
+        if(PlayerBaseEquipment.Instance != null)
+            PlayerBaseEquipment.Instance.OnDie();
+        SceneManager.LoadScene("ResultScene");
+    }
+    private void SyncToBaseState()
+    {
+        if (PlayerBaseState.Instacne == null) return;
+
+        PlayerBaseState.Instacne.BaseMaxHP = baseMaxHP;
+        PlayerBaseState.Instacne.CurrentHP = currentHP;
+        PlayerBaseState.Instacne.MaxHP = maxHP;
+        PlayerBaseState.Instacne.EquipHP = equipHP;
     }
 }

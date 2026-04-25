@@ -82,7 +82,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_MaskInteraction: 0
   m_Sprite: {fileID: 155338533, guid: c0dca04591b6fcd44985513abf7cac90, type: 3}
   m_Color: {r: 1, g: 0.62296605, b: 0, a: 1}
@@ -180,3 +180,4 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 128
+  hitSound: {fileID: 0}

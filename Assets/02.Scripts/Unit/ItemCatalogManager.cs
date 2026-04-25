@@ -28,6 +28,8 @@ public class ItemCatalogManager : MonoBehaviour
     [SerializeField] private List<ItemScriptable> registeredHealingData = new List<ItemScriptable>();
     [Header("Material")]
     [SerializeField] private List<ItemScriptable> registeredMaterialData = new List<ItemScriptable>();
+    [Header("Food")]
+    [SerializeField] private List<ItemScriptable> registeredFoodData = new List<ItemScriptable>();
 
 
 
@@ -45,9 +47,6 @@ public class ItemCatalogManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
-    private void Start()
-    {
         RegisterAddData(registeredWeaponData);
         RegisterAddData(registeredBackPackData);
         RegisterAddData(registeredHelmetData);
@@ -61,6 +60,11 @@ public class ItemCatalogManager : MonoBehaviour
         RegisterAddData(registeredVaccineData);
         RegisterAddData(registeredHealingData);
         RegisterAddData(registeredMaterialData);
+        RegisterAddData(registeredFoodData);
+    }
+    private void Start()
+    {
+
     }
     private void RegisterAddData(List<ItemScriptable> list)
     {

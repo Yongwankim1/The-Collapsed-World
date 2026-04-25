@@ -3,22 +3,22 @@ using UnityEngine;
 public class ItemSlotManager : MonoBehaviour
 {
     [SerializeField] Inventory inventory;
-    [SerializeField] EnemyInventory enemyInventory;
+    [SerializeField] RandomDropInventory enemyInventory;
     [SerializeField] ItemDetailPanel itemPanel;
     [SerializeField] PlayerStashUI playerStashUI;
-
+    [SerializeField] TradePanelUI tradePanelUI;
     public SlotType DragType;
     public SlotType DropType;
 
     public SlotData SelectDrag;
     public SlotData SelectDrop;
-
-    public void Initialize(EnemyInventory enemyInventory)
+    public void Initialize(RandomDropInventory enemyInventory)
     {
         this.enemyInventory = enemyInventory;
     }
     private void OnDisable()
     {
+        if (itemPanel) itemPanel.gameObject.SetActive(false);
         enemyInventory = null;
     }
     public bool InventoryUseItem(string itemId, int index, int amount) => inventory.UseItem(itemId,index,amount);
@@ -29,6 +29,7 @@ public class ItemSlotManager : MonoBehaviour
 
         SelectDrag = default;
         SelectDrop = default;
+        itemPanel.gameObject.SetActive(false);
     }
     public void OnDetailPanel(string itemID,int index, SlotType type)
     {
@@ -72,6 +73,12 @@ public class ItemSlotManager : MonoBehaviour
                     enemyInventory.ListAddItem(itemId, amount);
                 break;
             case SlotType.Stash:
+                if(tradePanelUI != null)
+                {
+                    playerStashUI.RemoveItemSlot(clickIndex);
+                    tradePanelUI.AddSlot(itemId,amount);
+                    return;
+                }
                 if (inventory.RemainingBagCount() > 0)
                 {
                     playerStashUI.RemoveItemSlot(clickIndex);
@@ -87,8 +94,22 @@ public class ItemSlotManager : MonoBehaviour
 
                 }
                 break;
+            case SlotType.Container:
+                if (playerStashUI)
+                {
+                    playerStashUI.AddItemSlot(itemId, amount);
+                    tradePanelUI.RemoveSlot(clickIndex);
+                }
+                break;
         }
         Initialize();
+    }
+    public void SelectTradeItem(string itemID)
+    {
+        if (!ItemCatalogManager.Instance.TryGetItemData(itemID, out var itemData)) return;
+
+        string text = itemData.DisplayName + "\t" + "아이템 가치 : " + itemData.ItemPrice; 
+        tradePanelUI.SetItemDisplayText(text,itemData.ItemID);
     }
     public bool InventorySlotChange()
     {
@@ -141,18 +162,26 @@ public class ItemSlotManager : MonoBehaviour
         {
             playerStashUI.SlotChange(SelectDrag.SlotIndex, SelectDrop.SlotIndex);
         }
+        else if (DragType == SlotType.Stash && DropType == SlotType.Container)
+        {
+            if (tradePanelUI.IsSlotItemID(SelectDrop.SlotIndex)) return false;
+            playerStashUI.RemoveItemSlot(SelectDrag.SlotIndex);
+            tradePanelUI.AddSlot(SelectDrag.ItemID,SelectDrag.Amount,SelectDrop.SlotIndex);
+            tradePanelUI.ContainerTotalPrice();
+
+        }
         else if (DragType == SlotType.Player && DropType == SlotType.Equip)
         {
             if (!IsVailedCheck(SelectDrag.ItemID, SelectDrop.ItemID)) return false;
 
             inventory.RemoveItem(SelectDrag.ItemID, SelectDrag.SlotIndex, SelectDrag.Amount);
-            if(!PlayerBaseEquipment.Instance.Equip(SelectDrag.ItemID, out string backItemID)) return false;
+            if (!PlayerBaseEquipment.Instance.Equip(SelectDrag.ItemID, out string backItemID)) return false;
             inventory.AddItem(backItemID, 1);
         }
         else if (DragType == SlotType.Equip && DropType == SlotType.Player)
         {
             if (!IsVailedCheck(SelectDrag.ItemID, SelectDrop.ItemID)) return false;
-            if(!PlayerBaseEquipment.Instance.UnEquip(SelectDrag.SlotIndex)) return false;
+            if (!PlayerBaseEquipment.Instance.UnEquip(SelectDrag.SlotIndex)) return false;
             inventory.RemoveItem(SelectDrop.ItemID, SelectDrop.SlotIndex, SelectDrop.Amount);
             PlayerBaseEquipment.Instance.Equip(SelectDrop.ItemID, out _);
 
@@ -172,9 +201,9 @@ public class ItemSlotManager : MonoBehaviour
         {
             if (!IsVailedCheck(SelectDrag.ItemID, SelectDrop.ItemID)) return false;
             //아이템 확인 먼저 필요
-            if(!PlayerBaseEquipment.Instance.UnEquip(SelectDrag.SlotIndex)) return false;
+            if (!PlayerBaseEquipment.Instance.UnEquip(SelectDrag.SlotIndex)) return false;
             playerStashUI.RemoveItemSlot(SelectDrop.SlotIndex);
-            playerStashUI.DrawSlot(SelectDrag.ItemID,1, SelectDrop.SlotIndex);
+            playerStashUI.DrawSlot(SelectDrag.ItemID, 1, SelectDrop.SlotIndex);
             PlayerBaseEquipment.Instance.Equip(SelectDrop.ItemID, out _);
         }
         Initialize();

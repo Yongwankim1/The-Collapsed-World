@@ -27,6 +27,11 @@ public class PlayerInventoryData : MonoBehaviour
     {
         SetBackPack();
     }
+
+    public void OnDie()
+    {
+        baseBackPack = new ItemPositiones[8];
+    }
     private void OnEnable()
     {
         if(PlayerBaseEquipment.Instance != null)
@@ -54,6 +59,18 @@ public class PlayerInventoryData : MonoBehaviour
         }
 
         return count;
+    }
+    public int CheckTotalPrice()
+    {
+        int price = 0;
+        for(int i = 0; i < baseBackPack.Length; i++)
+        {
+            if(string.IsNullOrEmpty(baseBackPack[i].ItemID)) continue;
+            if (!ItemCatalogManager.Instance.TryGetItemData(baseBackPack[i].ItemID,out ItemData data)) continue;
+
+            price += data.ItemPrice;
+        }
+        return price;
     }
     public bool CheckChangeItems(int amount)
     {
@@ -98,5 +115,33 @@ public class PlayerInventoryData : MonoBehaviour
         OnChangeBackpackData?.Invoke();
     }
 
+    public InventoryData GetData()
+    {
+        InventoryData data = new InventoryData();
 
+        int len = BaseBackPack.Length;
+        data.itemIDs = new string[len];
+        data.amounts = new int[len];
+        data.maxAmounts = new int[len];
+
+        for (int i = 0; i < len; i++)
+        {
+            data.itemIDs[i] = BaseBackPack[i].ItemID;
+            data.amounts[i] = BaseBackPack[i].Amount;
+            data.maxAmounts[i] = baseBackPack[i].MaxAmount;
+        }
+
+        return data;
+    }
+
+    public void LoadData(InventoryData data)
+    {
+        baseBackPack = new ItemPositiones[data.itemIDs.Length];
+        for (int i = 0; i < data.itemIDs.Length; i++)
+        {
+            BaseBackPack[i].ItemID = data.itemIDs[i];
+            BaseBackPack[i].Amount = data.amounts[i];
+            baseBackPack[i].MaxAmount = data.maxAmounts[i];
+        }
+    }
 }

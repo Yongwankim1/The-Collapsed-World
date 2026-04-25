@@ -8,12 +8,14 @@ public class HitBox : MonoBehaviour
     private HashSet<IDamageable> hash = new HashSet<IDamageable>();
     [SerializeField] float damage;
     [SerializeField] LayerMask targetLayer;
+    [SerializeField] AudioClip hitSound = null;
     private void Awake()
     {
         if(animator == null) animator = GetComponent<Animator>();
     }
-    public void Initialize(float damage, LayerMask target)
+    public void Initialize(float damage, LayerMask target, AudioClip clip = null)
     {
+        hitSound = clip;
         this.damage = damage;
         gameObject.SetActive(true);
         targetLayer = target;
@@ -42,6 +44,7 @@ public class HitBox : MonoBehaviour
         if (hash.Contains(damageable)) return;
         damageable.TakeDamage(damage);
         hash.Add(damageable);
+        if(SoundManager.Instance != null && hitSound != null) SoundManager.Instance.PlaySfxOneShot(hitSound);
         Debug.Log(collision.name + "이 " + damage + "만큼 맞음");
     }
     public void ActiveFalse()

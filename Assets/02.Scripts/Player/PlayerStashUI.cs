@@ -22,8 +22,12 @@ public class PlayerStashUI : MonoBehaviour
             if (slotUIs[i] == null) continue;
             Destroy(slotUIs[i].gameObject);
         }
-        if (PlayerStashManager.Instance == null) return;
-        slotMaxIndex = PlayerStashManager.Instance.slotUIs.Length;
+        if (PlayerStashManager.Instance == null)
+        {
+            Debug.Log('1');
+            return;
+        }
+        slotMaxIndex = PlayerStashManager.Instance.SlotUIs.Length;
         slotUIs = new SlotUI[slotMaxIndex];
         DrawAllSlots();
     }
@@ -34,10 +38,10 @@ public class PlayerStashUI : MonoBehaviour
         {
             if (slotUIs[i] == null) slotUIs[i] = Instantiate(slotUiPrefab,slotParent);
 
-            if (string.IsNullOrEmpty(PlayerStashManager.Instance.slotUIs[i].ItemID))
+            if (string.IsNullOrEmpty(PlayerStashManager.Instance.SlotUIs[i].ItemID))
                 slotUIs[i].Initialize(SlotType.Stash,i);
             else
-                slotUIs[i].Initialize(PlayerStashManager.Instance.slotUIs[i].ItemID, PlayerStashManager.Instance.slotUIs[i].Amount, SlotType.Stash, i);
+                slotUIs[i].Initialize(PlayerStashManager.Instance.SlotUIs[i].ItemID, PlayerStashManager.Instance.SlotUIs[i].Amount, SlotType.Stash, i);
         }
     }
     public void SlotChange(int dragIndex, int dropIndex)
@@ -88,7 +92,7 @@ public class PlayerStashUI : MonoBehaviour
         for (int i = 0; i < slotUIs.Length; i++)
         {
             if (slotUIs[i] == null) continue;
-            PlayerStashManager.Instance.slotUIs[i].SetItemPositiones(slotUIs[i].SlotData.ItemID, slotUIs[i].SlotData.Amount);
+            PlayerStashManager.Instance.SlotUIs[i].SetItemPositiones(slotUIs[i].SlotData.ItemID, slotUIs[i].SlotData.Amount);
 
         }
     }

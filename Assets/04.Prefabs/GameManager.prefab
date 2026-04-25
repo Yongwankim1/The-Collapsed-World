@@ -16,6 +16,11 @@ GameObject:
   - component: {fileID: 5861801724813134050}
   - component: {fileID: 3874360626030423967}
   - component: {fileID: 3568108005025558476}
+  - component: {fileID: 5526433594032772400}
+  - component: {fileID: 2798548207908034934}
+  - component: {fileID: 1169422871529696759}
+  - component: {fileID: 3534407776146307328}
+  - component: {fileID: 4564145903842633315}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -84,6 +89,9 @@ MonoBehaviour:
   MaxHydration: 100
   hunger: 100
   MaxHunger: 100
+  hpIncraseAmount: 10
+  hungerIncraseAmount: 10
+  hydrationIncraseAmount: 10
 --- !u!114 &1531372167918526304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,25 +105,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   slotMaxIndex: 100
-  slotUIs:
-  - ItemID: 
-    Amount: 0
-    MaxAmount: 0
-  - ItemID: 
-    Amount: 0
-    MaxAmount: 0
-  - ItemID: 
-    Amount: 0
-    MaxAmount: 0
-  - ItemID: 
-    Amount: 0
-    MaxAmount: 0
-  - ItemID: 
-    Amount: 0
-    MaxAmount: 0
-  - ItemID: 
-    Amount: 0
-    MaxAmount: 0
+  SlotUIs:
+  - ItemID: Weapon01
+    Amount: 1
+    MaxAmount: 1
+  - ItemID: Weapon01
+    Amount: 1
+    MaxAmount: 1
+  - ItemID: Weapon01
+    Amount: 1
+    MaxAmount: 1
+  - ItemID: BackPack01
+    Amount: 1
+    MaxAmount: 1
+  - ItemID: BackPack01
+    Amount: 1
+    MaxAmount: 1
+  - ItemID: BackPack01
+    Amount: 1
+    MaxAmount: 1
   - ItemID: 
     Amount: 0
     MaxAmount: 0
@@ -411,10 +419,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   WeaponID: Weapon01
-  HeadArmorID: 
-  BodyArmorID: 
-  ShoesArmorID: 
-  PentsArmorID: 
+  HeadArmorID: head01
+  BodyArmorID: body01
+  ShoesArmorID: shoes01
+  PentsArmorID: pents01
   BackPackID: BackPack01
 --- !u!114 &3874360626030423967
 MonoBehaviour:
@@ -443,19 +451,96 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 454aabfc578265843b78a02fd52b4548, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  stages:
+  Stages:
+  - IsWaterRepair: 1
+    IsPowerRepair: 1
+    IsBossDie: 0
   - IsWaterRepair: 0
     IsPowerRepair: 0
     IsBossDie: 0
-  - IsWaterRepair: 1
-    IsPowerRepair: 1
+  - IsWaterRepair: 0
+    IsPowerRepair: 0
     IsBossDie: 0
-  - IsWaterRepair: 1
-    IsPowerRepair: 1
+  - IsWaterRepair: 0
+    IsPowerRepair: 0
     IsBossDie: 0
-  - IsWaterRepair: 1
-    IsPowerRepair: 1
+  - IsWaterRepair: 0
+    IsPowerRepair: 0
     IsBossDie: 0
-  enemyLevelScriptables: []
-  CurrentStage: 0
+  enemyLevelScriptables:
+  - {fileID: 11400000, guid: b03a08863c9d3914ab2b5f55ae4e14b4, type: 2}
   currentEnemyLevel: {fileID: 0}
+--- !u!114 &5526433594032772400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2288621133303722011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a6c33ee530b03644a28008fc6704730, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  bgmSource: {fileID: 0}
+  sfxSource: {fileID: 0}
+  masterVolumeValue: 1
+  bgmVolumeValue: 1
+  sfxVolumeValue: 1
+  currentBGMVolume: 1
+  isMasterMute: 0
+  isBgmMute: 0
+  isSfxMute: 0
+--- !u!114 &2798548207908034934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2288621133303722011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8b4b1d7591143a428139ecf63bc0401, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  timer: 0
+--- !u!114 &1169422871529696759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2288621133303722011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8ef33417019e0540b4974b703f84f86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameSceneManager
+--- !u!114 &3534407776146307328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2288621133303722011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 110fac9f66697014e9efb9fd1f25498e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+--- !u!114 &4564145903842633315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2288621133303722011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dfc3a1316bde6b4c9a99a268bb1f5b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  count: 0
+  currentEscPanel: {fileID: 0}
+  uiOpen: {fileID: 8300000, guid: 0807467dbe8bb9b4eaac9d0e35224bf6, type: 3}
+  uiClose: {fileID: 8300000, guid: 07a6e796be13b3c4ba0b87ea671d18b0, type: 3}

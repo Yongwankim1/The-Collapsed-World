@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 895c1dd856d33654690efb159e88f26a, type: 3}
+  m_Name: EquipItem05
+  m_EditorClassIdentifier: Assembly-CSharp::EquipmentScriptable
+  ItemData:
+    type: 2
+    worldItemPrefab: {fileID: 0}
+    itemID: BackPack05
+    displayName: "\uAD70\uC7A5"
+    description: "\uC804\uC7C1\uC5D0\uC11C \uC0AC\uC6A9\uB418\uB294 \uAD70\uC7A5"
+    maxStack: 1
+    itemIcon: {fileID: -5958414644981004128, guid: 38407e500546fb947b2ee9bf7a423e88, type: 3}
+    value1: 50
+    value2: 0
+    damage: 0
+    speed: 0
+    attackCoolDown: 0
+    weaponEffect: {fileID: 0}
+    weaponPrefab: {fileID: 0}
+    attackType: 0
+    itemPrice: 10000

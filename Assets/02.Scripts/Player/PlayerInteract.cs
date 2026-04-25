@@ -29,6 +29,7 @@ public class PlayerInteract : MonoBehaviour
             return;
         }
         interactions[interactions.Count - 1].Interact(this);
+        if (interactions.Count > 0) interactions.RemoveAt(interactions.Count - 1);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

@@ -16,7 +16,15 @@ public class InventoryAction : MonoBehaviour
         if (inputReader == null) return;
         if (inputReader.IsInventoryPerformedThisFrame)
         {
-            inventoryGUI.gameObject.SetActive(!inventoryGUI.gameObject.activeSelf);
+            //inventoryGUI.gameObject.SetActive(!inventoryGUI.gameObject.activeSelf);
+            if (!inventoryGUI.gameObject.activeSelf)
+            {
+                EscManager.Instance.PushPanel(inventoryGUI.gameObject);
+            }
+            else
+            {
+                EscManager.Instance.PopPanel();
+            }
         }
 
     }
@@ -24,7 +32,7 @@ public class InventoryAction : MonoBehaviour
     {
         if (inventoryGUI == null) return;
 
-        inventoryGUI.gameObject.SetActive(true);
-
+        //inventoryGUI.gameObject.SetActive(true);
+        EscManager.Instance.PushPanel(inventoryGUI.gameObject);
     }
 }

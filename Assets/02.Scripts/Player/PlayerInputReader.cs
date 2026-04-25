@@ -43,7 +43,7 @@ public class PlayerInputReader : MonoBehaviour
     private void Update()
     {
         IsInventoryPerformedThisFrame = inventoryAction != null && inventoryAction.WasPerformedThisFrame();
-        if (DontAction.Count > 0)
+        if (EscManager.Instance.Count > 0)
         {
             IsAttackPerformedThisFrame = false;
             IsInteractPerformedThisFrame = false;

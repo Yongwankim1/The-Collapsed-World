@@ -15,6 +15,8 @@ public enum SlotType
     Player,
     Stash,
     Equip,
+    Trade,
+    Container
 }
 public class SlotUI : MonoBehaviour
 {

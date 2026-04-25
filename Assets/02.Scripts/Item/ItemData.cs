@@ -28,6 +28,7 @@ public enum ItemType
 
     //Àç·áµé
     Material,
+    Food,
 }
 [System.Serializable]
 public struct ItemData
@@ -47,6 +48,8 @@ public struct ItemData
     [SerializeField] GameObject weaponEffect;
     [SerializeField] GameObject weaponPrefab;
     [SerializeField] AttackType attackType;
+    [SerializeField] int itemPrice;
+
     public readonly WorldItem WorldItem => worldItemPrefab;
     public readonly ItemType Type => type;
     public readonly string ItemID => itemID;
@@ -62,4 +65,5 @@ public struct ItemData
     public readonly GameObject WeaponEffect => weaponEffect;
     public readonly GameObject WeaponPrefab => weaponPrefab;
     public readonly AttackType AttackType => attackType;
+    public readonly int ItemPrice => itemPrice;
 }

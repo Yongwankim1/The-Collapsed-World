@@ -20,7 +20,7 @@ public class StageBtn : MonoBehaviour
     {
         if (StageManager.Instance == null) return;
 
-        if (StageManager.Instance.stages[stageIndex].IsClear())
+        if (StageManager.Instance.Stages[stageIndex].IsClear())
         {
             myImage.sprite = activeSprite;
         }

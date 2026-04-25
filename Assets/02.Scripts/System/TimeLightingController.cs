@@ -1,6 +1,6 @@
-using System;
 using UnityEngine;
 
+[DefaultExecutionOrder(-994)]
 public class TimeLightingController : MonoBehaviour
 {
     public static TimeLightingController Instance;
@@ -26,7 +26,32 @@ public class TimeLightingController : MonoBehaviour
     }
     private void Update()
     {
-        playDay = Time.time / cycleDuration;
-        timeLightingValue = Time.time % cycleDuration;
+        if (cycleDuration <= 0f) return;
+
+        float delta = Time.deltaTime;
+
+        playDay += delta / cycleDuration;
+
+        timeLightingValue += delta;
+
+        if (timeLightingValue >= cycleDuration)
+        {
+            timeLightingValue -= cycleDuration;
+        }
+    }
+
+    public TimeData GetData()
+    {
+        TimeData data = new TimeData();
+        data.time = TimeLightingValue;
+        data.playDay = PlayDay;
+
+        return data;
+    }
+
+    public void LoadData(TimeData data)
+    {
+        timeLightingValue = data.time;
+        playDay = data.playDay;
     }
 }

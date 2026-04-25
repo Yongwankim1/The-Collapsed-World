@@ -99,6 +99,7 @@ public class Inventory : MonoBehaviour
     }
     public int AddItem(string itemId, int amount)
     {
+        Debug.Log("1");
         return IncreaseItem(itemId, amount);
     }
     public void AddItem(string itemId, int amount, int index)
