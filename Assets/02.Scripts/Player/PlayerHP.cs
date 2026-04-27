@@ -14,7 +14,7 @@ public class PlayerHP : CharacterHP
 
     private void Awake()
     {
-        Initialize();
+
     }
 
     private void OnEnable()
@@ -29,6 +29,8 @@ public class PlayerHP : CharacterHP
         {
             PlayerBaseEquipment.Instance.OnChangeEquip += RefreshEquipHP;
         }
+        if (PlayerBaseState.Instacne) PlayerBaseState.Instacne.OnChangeState += Initialize;
+        Initialize();
     }
 
     private void OnDisable()
@@ -50,6 +52,7 @@ public class PlayerHP : CharacterHP
             PlayerBaseState.Instacne.CurrentHP = currentHP;
             PlayerBaseState.Instacne.MaxHP = maxHP;
             PlayerBaseState.Instacne.EquipHP = equipHP;
+            PlayerBaseState.Instacne.OnChangeState -= Initialize;
         }
     }
 

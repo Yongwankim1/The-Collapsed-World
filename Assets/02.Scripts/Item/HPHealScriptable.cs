@@ -2,6 +2,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "HPHeal", menuName = "Item/HealItem")]
 public class HPHealScriptable : ItemScriptable
 {
+    [SerializeField] AudioClip healSound;
     public override void Use(Inventory inventory)
     {
         PlayerHP playerHP = inventory.GetComponent<PlayerHP>();
@@ -13,5 +14,7 @@ public class HPHealScriptable : ItemScriptable
         }
         playerHP.Heal(ItemData.Value1);
         Debug.Log("ÈúÅÛ »ç¿ë");
+        if (!healSound || !SoundManager.Instance) return;
+        SoundManager.Instance.PlaySfxOneShot(healSound);
     }
 }

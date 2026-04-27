@@ -30,3 +30,4 @@ MonoBehaviour:
     weaponPrefab: {fileID: 0}
     attackType: 0
     itemPrice: 200
+  healSound: {fileID: 8300000, guid: 6570626c6a9992c449eab8256ff93e83, type: 3}

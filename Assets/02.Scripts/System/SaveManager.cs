@@ -95,6 +95,7 @@ public class SaveManager : MonoBehaviour
         GameData newData = CreateDefaultData();
         ApplyData(newData);
         Save();
+        Load();
     }
     public void Save()
     {

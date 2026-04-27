@@ -6648,6 +6648,8 @@ MonoBehaviour:
   selectItemDisplayText: {fileID: 569396876}
   containerPriceText: {fileID: 1312666049}
   selectItemID: 
+  tradeSuccess: {fileID: 8300000, guid: 92b23f462b6997a46a72320462b447f6, type: 3}
+  tradeFail: {fileID: 8300000, guid: 3f6f830d8a44f2246a8a1ebc00e52067, type: 3}
 --- !u!114 &745788967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11077,7 +11079,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4278255615
   m_fontColor: {r: 1, g: 1, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3

@@ -11,13 +11,13 @@ public class PlayerHPUI : MonoBehaviour
     {
         if (playerHP == null)
             playerHP = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHP>();
-        UpdateHP(playerHP.BaseMaxHP, playerHP.CurrentHP);
+        UpdateHP(playerHP.MaxHP, playerHP.CurrentHP);
     }
     private void OnEnable()
     {
         if (playerHP != null)
             playerHP.OnChangeHP += UpdateHP;
-        UpdateHP(playerHP.BaseMaxHP, playerHP.CurrentHP);
+        UpdateHP(playerHP.MaxHP, playerHP.CurrentHP);
     }
 
     private void OnDisable()

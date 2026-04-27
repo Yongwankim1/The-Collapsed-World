@@ -27,6 +27,7 @@ public class SceneEscPanelController : MonoBehaviour
     public void OnExitPlayScene()
     {
         if(playerHP == null) return;
+        EscManager.Instance.ClearPanel();
         playerHP.TakeDamage(float.MaxValue);
     }
 

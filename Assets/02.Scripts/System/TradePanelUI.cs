@@ -17,6 +17,9 @@ public class TradePanelUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI containerPriceText;
 
     [SerializeField] string selectItemID;
+
+    [SerializeField] AudioClip tradeSuccess;
+    [SerializeField] AudioClip tradeFail;
     private void OnEnable()
     {
         Init();
@@ -130,7 +133,11 @@ public class TradePanelUI : MonoBehaviour
     }
     public void OnBuy()
     {
-        if(string.IsNullOrEmpty(selectItemID)) return;
+        if (string.IsNullOrEmpty(selectItemID))
+        {
+            SoundManager.Instance.PlaySfxOneShot(tradeFail);
+            return;
+        }
         ItemData itemData;
         int totalPrice = 0;
         for (int i = 0; i < playerSellContainer.Count; i++)
@@ -143,12 +150,16 @@ public class TradePanelUI : MonoBehaviour
         if (!ItemCatalogManager.Instance.TryGetItemData(selectItemID, out itemData)) return;
 
 
-        if (totalPrice < itemData.ItemPrice) return;
-
+        if (totalPrice < itemData.ItemPrice)
+        {
+            SoundManager.Instance.PlaySfxOneShot(tradeFail);
+            return;
+        }
         playerStashUI.AddItemSlot(selectItemID, 1);
         selectItemID = string.Empty;
         selectItemDisplayText.text = "선택된 아이템";
         ClearPlayerSellContainer();
         ContainerTotalPrice();
+        SoundManager.Instance.PlaySfxOneShot(tradeSuccess);
     }
 }

@@ -39,7 +39,11 @@ public class EscManager : MonoBehaviour
     {
         currentEscPanel = panel;
     }
-
+    public void ClearPanel()
+    {
+        if (openPanels.Count <= 0) return;
+        openPanels.Clear();
+    }
     public void PushPanel(GameObject panel)
     {
         if (panel == null) return;
@@ -50,7 +54,10 @@ public class EscManager : MonoBehaviour
         if (SoundManager.Instance)
             SoundManager.Instance.PlaySfxOneShot(uiOpen,0.7f);
     }
-
+    public GameObject PeekPanel()
+    {
+        return openPanels.Peek();
+    }
     public bool PopPanel()
     {
         if(openPanels.Count == 0) return false;

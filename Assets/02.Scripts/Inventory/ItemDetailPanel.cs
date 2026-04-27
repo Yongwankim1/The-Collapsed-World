@@ -98,7 +98,7 @@ public class ItemDetailPanel : MonoBehaviour
                 if(!PlayerBaseEquipment.Instance.UnEquip(Index)) return;
             }
             currentSlotType = SlotType.None;
-            gameObject.SetActive(false);
+            EscManager.Instance.PopPanel();
         });
     }
     private void OnDisable()
@@ -106,5 +106,9 @@ public class ItemDetailPanel : MonoBehaviour
         closeBtn.onClick.RemoveAllListeners();
         useBtn.onClick.RemoveAllListeners();
         gameObject.SetActive(false);
+        if(EscManager.Instance.PeekPanel() == gameObject)
+        {
+            EscManager.Instance.PopPanel();
+        }
     }
 }
