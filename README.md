@@ -1,4 +1,4 @@
-# Bootcamp Personal Project
+# The Collapsed World
 
 > **Unity 기반 포스트 아포칼립스 생존 액션 프로젝트**
 
